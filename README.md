@@ -59,11 +59,7 @@ Users can upload MP4 video files, which are converted to MP3 audio asynchronousl
 
 Create an EKS cluster in AWS and configure `kubectl` to connect to the cluster.
 
-> **[SCREENSHOT SLOT — EKS Cluster]**
->
-> Add your EKS cluster screenshot here.
->
-> `Projectdocs/eks-cluster.png`
+![EKS Cluster](Projectdocs/eks-cluster.png)
 
 ---
 
@@ -80,11 +76,7 @@ For this application, the Gateway and Auth services use NodePorts such as:
 
 Add the required inbound rules to the EC2/EKS node Security Group.
 
-> **[SCREENSHOT SLOT — Node Inbound Rules]**
->
-> Add your AWS Security Group inbound rules screenshot here.
->
-> `Projectdocs/inbound-rules.png`
+![Inbound Rules](Projectdocs/inbound-rules.png)
 
 ---
 
@@ -102,12 +94,7 @@ Check the running pods:
 ```bash
 kubectl get pods
 ```
-
-> **[SCREENSHOT SLOT — Running Pods]**
->
-> Add your running microservices pods screenshot here.
->
-> `Projectdocs/running-pods.png`
+![Microservices](Projectdocs/running-pods.png)
 
 ---
 
@@ -121,11 +108,7 @@ kubectl get services
 
 The Auth and Gateway services expose NodePorts that can be accessed using the Node IP.
 
-> **[SCREENSHOT SLOT — Kubernetes Services]**
->
-> Add your Kubernetes services screenshot here.
->
-> `Projectdocs/services.png`
+![Services](Projectdocs/services.png)
 
 ---
 
@@ -150,11 +133,7 @@ curl -X POST http://<NODE_IP>:30002/upload \
 
 The Gateway stores the file in MongoDB and sends a conversion task to RabbitMQ.
 
-> **[SCREENSHOT SLOT — MP4 Upload]**
->
-> Add your upload screenshot here.
->
-> `Projectdocs/upload.png`
+![Upload MP4 video](Projectdocs/upload.png)
 
 ---
 
@@ -166,35 +145,16 @@ kubectl exec -it rabbitmq-0 -- rabbitmqctl list_queues
 
 This shows the RabbitMQ queues and helps verify that the conversion task has been received.
 
-> **[SCREENSHOT SLOT — RabbitMQ]**
->
-> Add your RabbitMQ screenshot here.
->
-> `Projectdocs/rabbitmq.png`
+![RabbitMQ](Projectdocs/rabbitmq.png)
+
 
 ---
 
-### 8. Conversion
-
-The Converter Service gets the task from RabbitMQ, retrieves the MP4 file from MongoDB GridFS, converts it to MP3 using FFmpeg, and stores the MP3 file back in MongoDB.
-
-> **[SCREENSHOT SLOT — Conversion]**
->
-> Add your converter service screenshot here.
->
-> `Projectdocs/converter.png`
-
----
-
-### 9. Email Notification
+### 8. Email Notification
 
 After conversion is complete, the Notification Service sends an email containing the MP3 file ID (`fid`).
 
-> **[SCREENSHOT SLOT — Email Notification]**
->
-> Add your email screenshot here.
->
-> `Projectdocs/email.png`
+![Email notification](Projectdocs/email.png)
 
 ---
 
@@ -207,12 +167,7 @@ curl -o video.mp3 \
   -H "Authorization: Bearer <YOUR_JWT_TOKEN>" \
   "http://<NODE_IP>:30002/download?fid=<MP3_FID_FROM_EMAIL>"
 ```
-
-> **[SCREENSHOT SLOT — MP3 Download]**
->
-> Add your download screenshot here.
->
-> `Projectdocs/download.png`
+![Downloading MP3](Projectdocs/download.png)
 
 ---
 
