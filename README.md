@@ -16,31 +16,31 @@ Users can upload MP4 video files, which are converted to MP3 audio asynchronousl
 
 ### Auth Service
 
-* Flask API
-* Connected to PostgreSQL
-* Validates user login
-* Generates JWT tokens
+- Flask API
+- Connected to PostgreSQL
+- Validates user login
+- Generates JWT tokens
 
 ### Gateway Service
 
-* Handles file uploads
-* Stores MP4 files in MongoDB GridFS
-* Sends conversion tasks to RabbitMQ
-* Provides MP3 download endpoint
+- Handles file uploads
+- Stores MP4 files in MongoDB GridFS
+- Sends conversion tasks to RabbitMQ
+- Provides MP3 download endpoint
 
 ### Converter Service
 
-* Runs as a background worker
-* Gets conversion tasks from RabbitMQ
-* Retrieves MP4 files from GridFS
-* Converts MP4 to MP3 using FFmpeg
-* Stores MP3 files back in MongoDB
+- Runs as a background worker
+- Gets conversion tasks from RabbitMQ
+- Retrieves MP4 files from GridFS
+- Converts MP4 to MP3 using FFmpeg
+- Stores MP3 files back in MongoDB
 
 ### Notification Service
 
-* Runs as a background worker
-* Receives completed conversion messages
-* Sends an email containing the MP3 file ID (`fid`)
+- Runs as a background worker
+- Receives completed conversion messages
+- Sends an email containing the MP3 file ID (`fid`)
 
 ---
 
@@ -48,10 +48,10 @@ Users can upload MP4 video files, which are converted to MP3 audio asynchronousl
 
 ### Prerequisites
 
-* AWS account
-* AWS EKS cluster
-* `kubectl`
-* `helm`
+- AWS account
+- AWS EKS cluster
+- `kubectl`
+- `helm`
 
 ---
 
@@ -86,17 +86,16 @@ Add the required inbound rules to the EC2/EKS node Security Group.
 >
 > `Projectdocs/inbound-rules.png`
 
-
 ---
 
 ### 3. Deploy Microservices
 
 Deploy the following services:
 
-* Auth Service
-* Gateway Service
-* Converter Service
-* Notification Service
+- Auth Service
+- Gateway Service
+- Converter Service
+- Notification Service
 
 Check the running pods:
 
@@ -137,6 +136,7 @@ curl -X POST http://<NODE_IP>:30001/login \
   -u "user@example.com:password"
 ```
 
+This returns a JWT token.
 
 ---
 
@@ -164,6 +164,8 @@ The Gateway stores the file in MongoDB and sends a conversion task to RabbitMQ.
 kubectl exec -it rabbitmq-0 -- rabbitmqctl list_queues
 ```
 
+This shows the RabbitMQ queues and helps verify that the conversion task has been received.
+
 > **[SCREENSHOT SLOT — RabbitMQ]**
 >
 > Add your RabbitMQ screenshot here.
@@ -174,7 +176,7 @@ kubectl exec -it rabbitmq-0 -- rabbitmqctl list_queues
 
 ### 8. Conversion
 
-The Converter Service gets the task from RabbitMQ, uses FFmpeg to convert the MP4 to MP3, and stores the MP3 in MongoDB.
+The Converter Service gets the task from RabbitMQ, retrieves the MP4 file from MongoDB GridFS, converts it to MP3 using FFmpeg, and stores the MP3 file back in MongoDB.
 
 > **[SCREENSHOT SLOT — Conversion]**
 >
@@ -186,7 +188,7 @@ The Converter Service gets the task from RabbitMQ, uses FFmpeg to convert the MP
 
 ### 9. Email Notification
 
-After conversion, the Notification Service sends an email containing the MP3 file ID (`fid`).
+After conversion is complete, the Notification Service sends an email containing the MP3 file ID (`fid`).
 
 > **[SCREENSHOT SLOT — Email Notification]**
 >
@@ -197,6 +199,8 @@ After conversion, the Notification Service sends an email containing the MP3 fil
 ---
 
 ### 10. Download MP3
+
+Use the `fid` received in the email to download the converted MP3 file.
 
 ```bash
 curl -o video.mp3 \
@@ -211,3 +215,4 @@ curl -o video.mp3 \
 > `Projectdocs/download.png`
 
 ---
+
